@@ -1,5 +1,3 @@
-import { Named } from "./named";
-
 type Fifths = number;
 type Octaves = number;
 export type Direction = 1 | -1;
