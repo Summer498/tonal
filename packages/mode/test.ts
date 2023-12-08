@@ -91,6 +91,8 @@ describe("Mode", () => {
     expect(Mode.relativeTonic("major", "minor", "A")).toEqual("C");
     expect(Mode.relativeTonic("major", "minor", "D")).toEqual("F");
     expect(Mode.relativeTonic("minor", "dorian", "D")).toEqual("A");
-    expect(Mode.relativeTonic("nonsense", "dorian", "D")).toEqual("");
+    expect(() => Mode.relativeTonic("nonsense", "dorian", "D")).toThrowError(
+      "Parse error: Illegal Interval Name () received"
+    );
   });
 });

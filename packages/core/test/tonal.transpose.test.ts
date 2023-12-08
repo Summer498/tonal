@@ -28,9 +28,15 @@ describe("Transpose", () => {
     });
 
     test("invalid notes and intervals", () => {
-      expect(transpose("M3", "blah")).toBe("");
-      expect(transpose("blah", "C2")).toBe("");
-      expect(transpose("", "")).toBe("");
+      expect(() => transpose("M3", "blah")).toThrowError(
+        "Parse error: Illegal Interval Name (blah) received"
+      );
+      expect(() => transpose("blah", "C2")).toThrowError(
+        "Parse error: Illegal Interval Name (C2) received"
+      );
+      expect(() => transpose("", "")).toThrowError(
+        "Parse error: Illegal Interval Name () received"
+      );
     });
 
     test("transpose by descending intervals", () => {

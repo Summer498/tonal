@@ -94,29 +94,34 @@ const cache: { [key in string]: Interval | NoInterval } = {};
  * interval('P5').semitones // => 7
  * interval('m3').type // => 'majorable'
  */
-export function interval(src: IntervalLiteral): Interval | NoInterval {
-  return typeof src === "string"
-    ? cache[src] || (cache[src] = parse(src))
-    : isPitch(src)
-    ? interval(pitchName(src))
-    : isNamed(src)
-    ? interval(src.name)
-    : NoInterval;
+export function interval(src: IntervalLiteral): Interval {
+  if (typeof src === "string") {
+    const c = cache[src];
+    if (c && c.empty === false) {
+      return c;
+    }
+    return (cache[src] = parse(src));
+  } else if (isPitch(src)) {
+    return interval(pitchName(src));
+  } else if (isNamed(src)) {
+    return interval(src.name);
+  } else
+    throw new Error(`Parse error: Undefined Interval Name (${src}) received`);
 }
 
 const SIZES = [0, 2, 4, 5, 7, 9, 11];
 const TYPES = "PMMPPMM";
-function parse(str?: string): Interval | NoInterval {
+function parse(str?: string): Interval {
   const tokens = tokenizeInterval(str);
   if (tokens[0] === "") {
-    return NoInterval;
+    throw new Error(`Parse error: Illegal Interval Name (${str}) received`);
   }
   const num = +tokens[0];
   const q = tokens[1] as Quality;
   const step = (Math.abs(num) - 1) % 7;
   const t = TYPES[step];
   if (t === "M" && q === "P") {
-    return NoInterval;
+    throw new Error(`Parse error: Illegal Interval Name (${str}) received`);
   }
   const type = t === "M" ? "majorable" : "perfectable";
 
