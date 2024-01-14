@@ -20,15 +20,31 @@ export interface Note extends Pitch, Named {
   readonly freq: number | null;
 }
 
+/*
 export interface NoNote extends Partial<Note> {
   empty: true;
   name: "";
   pc: "";
   acc: "";
 }
-const NoNote: NoNote = { empty: true, name: "", pc: "", acc: "" };
+*/
+const NoNote: Note = {
+  empty: true,
+  is_pitch: false,
+  name: "",
+  letter: "",
+  acc: "",
+  pc: "",
+  chroma: 0,
+  height: 0,
+  coord: [0],
+  midi: null,
+  freq: null,
+  step: 0,
+  alt: 0,
+};
 
-const cache: Map<NoteLiteral | undefined, Note | NoNote> = new Map();
+const cache: Map<NoteLiteral | undefined, Note> = new Map();
 
 export const stepToLetter = (step: number) => "CDEFGAB".charAt(step);
 export const altToAcc = (alt: number): string =>
@@ -41,7 +57,7 @@ export const accToAlt = (acc: string): number =>
  * @example
  * note('Bb4') // => { name: "Bb4", midi: 70, chroma: 10, ... }
  */
-export function note(src: NoteLiteral): Note | NoNote {
+export function note(src: NoteLiteral): Note {
   const stringSrc = JSON.stringify(src);
 
   const cached = cache.get(stringSrc);
@@ -83,7 +99,7 @@ export function coordToNote(noteCoord: PitchCoordinates): Note {
 const mod = (n: number, m: number) => ((n % m) + m) % m;
 
 const SEMI = [0, 2, 4, 5, 7, 9, 11];
-function parse(noteName: NoteName): Note | NoNote {
+function parse(noteName: NoteName): Note {
   const tokens = tokenizeNote(noteName);
   if (tokens[0] === "" || tokens[3] !== "") {
     return NoNote;
@@ -96,7 +112,7 @@ function parse(noteName: NoteName): Note | NoNote {
   const step = (letter.charCodeAt(0) + 3) % 7;
   const alt = accToAlt(acc);
   const oct = octStr.length ? +octStr : undefined;
-  const coord = encode({ step, alt, oct });
+  const coord = encode({ is_pitch: true, step, alt, oct });
 
   const name = letter + acc + octStr;
   const pc = letter + acc;
@@ -110,6 +126,7 @@ function parse(noteName: NoteName): Note | NoNote {
 
   return {
     empty: false,
+    is_pitch: true,
     acc,
     alt,
     chroma,

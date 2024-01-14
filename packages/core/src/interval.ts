@@ -43,13 +43,30 @@ export interface Interval extends Pitch, Named {
   readonly oct: number;
 }
 
+/*
 export interface NoInterval extends Partial<Interval> {
   readonly empty: true;
   readonly name: "";
   readonly acc: "";
 }
+*/
 
-const NoInterval: NoInterval = { empty: true, name: "", acc: "" };
+const NoInterval: Interval = {
+  empty: true,
+  is_pitch: false,
+  name: "",
+  num: 0,
+  q: "P",
+  type: "perfectable",
+  step: 0,
+  alt: 0,
+  dir: 1,
+  simple: 0,
+  semitones: 0,
+  chroma: 0,
+  coord: [0, 0, 1],
+  oct: 0,
+};
 
 // shorthand tonal notation (with quality after number)
 const INTERVAL_TONAL_REGEX = "([-+]?\\d+)(d{1,4}|m|M|P|A{1,4})";
@@ -72,7 +89,7 @@ export function tokenizeInterval(str?: IntervalName): IntervalTokens {
   return m[1] ? [m[1], m[2]] : [m[4], m[3]];
 }
 
-const cache: { [key in string]: Interval | NoInterval } = {};
+const cache: { [key in string]: Interval } = {};
 
 /**
  * Get interval properties. It returns an object with:
@@ -132,9 +149,16 @@ function parse(str?: string): Interval {
   const oct = Math.floor((Math.abs(num) - 1) / 7);
   const semitones = dir * (SIZES[step] + alt + 12 * oct);
   const chroma = (((dir * (SIZES[step] + alt)) % 12) + 12) % 12;
-  const coord = encode({ step, alt, oct, dir }) as IntervalCoordinates;
+  const coord = encode({
+    is_pitch: true,
+    step,
+    alt,
+    oct,
+    dir,
+  }) as IntervalCoordinates;
   return {
     empty: false,
+    is_pitch: true,
     name,
     num,
     q,

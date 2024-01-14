@@ -10,6 +10,7 @@ describe("@tonaljs/interval", () => {
       coord: [-1, 1],
       dir: 1,
       empty: false,
+      is_pitch: true,
       name: "4P",
       num: 4,
       oct: 0,

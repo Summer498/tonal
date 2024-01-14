@@ -10,6 +10,7 @@ describe("interval", () => {
     test("has all properties", () => {
       expect(interval("4d")).toEqual({
         empty: false,
+        is_pitch: true,
         name: "4d",
         num: 4,
         q: "d",
@@ -78,22 +79,42 @@ describe("interval", () => {
 
   describe("interval from pitch props", () => {
     it("requires step, alt and dir", () => {
-      expect(interval({ step: 0, alt: 0, dir: 1 }).name).toBe("1P");
-      expect(interval({ step: 0, alt: -2, dir: 1 }).name).toBe("1dd");
-      expect(interval({ step: 1, alt: 1, dir: 1 }).name).toBe("2A");
-      expect(interval({ step: 2, alt: -2, dir: 1 }).name).toBe("3d");
-      expect(interval({ step: 1, alt: 1, dir: -1 }).name).toBe("-2A");
-      expect(() => interval({ step: 1000, alt: 0 })).toThrowError(
-        "Parse error: Illegal Interval Name () received"
+      expect(interval({ is_pitch: true, step: 0, alt: 0, dir: 1 }).name).toBe(
+        "1P"
       );
+      expect(interval({ is_pitch: true, step: 0, alt: -2, dir: 1 }).name).toBe(
+        "1dd"
+      );
+      expect(interval({ is_pitch: true, step: 1, alt: 1, dir: 1 }).name).toBe(
+        "2A"
+      );
+      expect(interval({ is_pitch: true, step: 2, alt: -2, dir: 1 }).name).toBe(
+        "3d"
+      );
+      expect(interval({ is_pitch: true, step: 1, alt: 1, dir: -1 }).name).toBe(
+        "-2A"
+      );
+      expect(() =>
+        interval({ is_pitch: true, step: 1000, alt: 0 })
+      ).toThrowError("Parse error: Illegal Interval Name () received");
     });
 
     it("accepts octave", () => {
-      expect(interval({ step: 0, alt: 0, oct: 0, dir: 1 }).name).toBe("1P");
-      expect(interval({ step: 0, alt: -1, oct: 1, dir: -1 }).name).toBe("-8d");
-      expect(interval({ step: 0, alt: 1, oct: 2, dir: -1 }).name).toBe("-15A");
-      expect(interval({ step: 1, alt: -1, oct: 1, dir: -1 }).name).toBe("-9m");
-      expect(interval({ step: 0, alt: 0, oct: 0, dir: 1 }).name).toBe("1P");
+      expect(
+        interval({ is_pitch: true, step: 0, alt: 0, oct: 0, dir: 1 }).name
+      ).toBe("1P");
+      expect(
+        interval({ is_pitch: true, step: 0, alt: -1, oct: 1, dir: -1 }).name
+      ).toBe("-8d");
+      expect(
+        interval({ is_pitch: true, step: 0, alt: 1, oct: 2, dir: -1 }).name
+      ).toBe("-15A");
+      expect(
+        interval({ is_pitch: true, step: 1, alt: -1, oct: 1, dir: -1 }).name
+      ).toBe("-9m");
+      expect(
+        interval({ is_pitch: true, step: 0, alt: 0, oct: 0, dir: 1 }).name
+      ).toBe("1P");
     });
   });
 });

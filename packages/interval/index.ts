@@ -98,7 +98,7 @@ export function invert(name: IntervalName): IntervalName {
   }
   const step = (7 - i.step) % 7;
   const alt = i.type === "perfectable" ? -i.alt : -(i.alt + 1);
-  return props({ step, alt, oct: i.oct, dir: i.dir }).name;
+  return props({ is_pitch: true, step, alt, oct: i.oct, dir: i.dir }).name;
 }
 
 // interval numbers

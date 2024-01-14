@@ -19,6 +19,7 @@ export type PitchCoordinates =
  * - {number} [dir] = Interval direction (undefined when is not an interval)
  */
 export interface Pitch {
+  readonly is_pitch: boolean;
   readonly step: number;
   readonly alt: number;
   readonly oct?: number; // undefined for pitch classes
@@ -26,12 +27,13 @@ export interface Pitch {
 }
 
 export function isPitch(pitch: any): pitch is Pitch {
-  return pitch !== null &&
+  return (
+    pitch !== null &&
     typeof pitch === "object" &&
-    typeof pitch.step === "number" &&
-    typeof pitch.alt === "number"
-    ? true
-    : false;
+    typeof pitch.is_pitch !== "undefined" &&
+    typeof pitch.is_pitch !== "object" &&
+    pitch.is_pitch
+  );
 }
 
 // The number of fifths of [C, D, E, F, G, A, B]
@@ -62,10 +64,10 @@ export function decode(coord: PitchCoordinates): Pitch {
   const step = FIFTHS_TO_STEPS[unaltered(f)];
   const alt = Math.floor((f + 1) / 7);
   if (o === undefined) {
-    return { step, alt, dir };
+    return { is_pitch: true, step, alt, dir };
   }
   const oct = o + 4 * alt + STEPS_TO_OCTS[step];
-  return { step, alt, oct, dir };
+  return { is_pitch: true, step, alt, oct, dir };
 }
 
 // Return the number of fifths as if it were unaltered

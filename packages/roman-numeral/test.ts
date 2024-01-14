@@ -32,6 +32,7 @@ describe("tonal-roman-numeral", () => {
         name: "#VIIb5",
         roman: "VII",
         interval: "7A",
+        is_pitch: true,
         acc: "#",
         chordType: "b5",
         major: true,

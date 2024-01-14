@@ -12,6 +12,7 @@ describe("note", () => {
       empty: false,
       freq: 261.6255653005986,
       height: 60,
+      is_pitch: true,
       letter: "C",
       midi: 60,
       name: "C4",

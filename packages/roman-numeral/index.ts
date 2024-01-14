@@ -19,14 +19,28 @@ export interface RomanNumeral extends Pitch, Named {
   readonly dir: 1;
 }
 
+/*
 export interface NoRomanNumeral extends Partial<RomanNumeral> {
   readonly empty: true;
   readonly name: "";
   readonly chordType: "";
 }
-const NoRomanNumeral: NoRomanNumeral = { empty: true, name: "", chordType: "" };
+*/
+const NoRomanNumeral: RomanNumeral = {
+  empty: true,
+  acc: "",
+  alt: 0,
+  chordType: "",
+  dir: 1,
+  is_pitch: false,
+  interval: "",
+  major: true,
+  name: "",
+  roman: "",
+  step: 0,
+};
 
-const cache: Record<string, RomanNumeral | NoRomanNumeral> = {};
+const cache: Record<string, RomanNumeral> = {};
 
 /**
  * Get properties of a roman numeral string
@@ -42,7 +56,7 @@ const cache: Record<string, RomanNumeral | NoRomanNumeral> = {};
  * @example
  * romanNumeral("VIIb5") // => { name: "VII", type: "b5", num: 7, major: true }
  */
-export function get(src: any): RomanNumeral | NoRomanNumeral {
+export function get(src: any): RomanNumeral {
   return typeof src === "string"
     ? cache[src] || (cache[src] = parse(src))
     : typeof src === "number"
@@ -74,7 +88,7 @@ export function names(major = true) {
   return (major ? NAMES : NAMES_MINOR).slice();
 }
 
-function fromPitch(pitch: Pitch): RomanNumeral | NoRomanNumeral {
+function fromPitch(pitch: Pitch): RomanNumeral {
   return get(altToAcc(pitch.alt) + NAMES[pitch.step]);
 }
 
@@ -91,7 +105,7 @@ const ROMANS = "I II III IV V VI VII";
 const NAMES = ROMANS.split(" ");
 const NAMES_MINOR = ROMANS.toLowerCase().split(" ");
 
-function parse(src: string): RomanNumeral | NoRomanNumeral {
+function parse(src: string): RomanNumeral {
   const [name, acc, roman, chordType] = tokenize(src);
   if (!roman) {
     return NoRomanNumeral;
@@ -103,9 +117,10 @@ function parse(src: string): RomanNumeral | NoRomanNumeral {
   const dir = 1;
   return {
     empty: false,
+    is_pitch: true,
     name,
     roman,
-    interval: interval({ step, alt, dir }).name,
+    interval: interval({ is_pitch: true, step, alt, dir }).name,
     acc,
     chordType,
     alt,
