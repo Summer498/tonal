@@ -28,7 +28,8 @@ export interface NoNote extends Partial<Note> {
   acc: "";
 }
 */
-const NoNote: Note = {
+
+export const NoNote: Note = {
   empty: true,
   is_pitch: false,
   name: "",

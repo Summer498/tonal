@@ -32,7 +32,7 @@ export interface Chord extends ChordType {
   notes: NoteName[];
 }
 
-const NoChord: Chord = {
+export const NoChord: Chord = {
   empty: true,
   name: "",
   symbol: "",

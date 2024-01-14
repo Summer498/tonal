@@ -51,7 +51,7 @@ export interface NoInterval extends Partial<Interval> {
 }
 */
 
-const NoInterval: Interval = {
+export const NoInterval: Interval = {
   empty: true,
   is_pitch: false,
   name: "",

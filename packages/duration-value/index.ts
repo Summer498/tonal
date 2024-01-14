@@ -18,7 +18,7 @@ export interface DurationValue {
   names: string[];
 }
 
-const NoDuration: DurationValue = {
+export const NoDuration: DurationValue = {
   empty: true,
   name: "",
   value: 0,

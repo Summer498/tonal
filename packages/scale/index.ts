@@ -37,7 +37,7 @@ export interface Scale extends ScaleType {
   notes: NoteName[];
 }
 
-const NoScale: Scale = {
+export const NoScale: Scale = {
   empty: true,
   name: "",
   type: "",

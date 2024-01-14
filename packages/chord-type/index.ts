@@ -20,7 +20,8 @@ export interface ChordType extends Pcset {
   quality: ChordQuality;
   aliases: string[];
 }
-const NoChordType: ChordType = {
+
+export const NoChordType: ChordType = {
   ...EmptyPcset,
   name: "",
   quality: "Unknown",

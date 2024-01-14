@@ -26,7 +26,8 @@ export interface NoRomanNumeral extends Partial<RomanNumeral> {
   readonly chordType: "";
 }
 */
-const NoRomanNumeral: RomanNumeral = {
+
+export const NoRomanNumeral: RomanNumeral = {
   empty: true,
   acc: "",
   alt: 0,

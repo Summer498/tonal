@@ -11,7 +11,7 @@ export interface Key {
   readonly keySignature: string;
 }
 
-const NoKey: Key = {
+export const NoKey: Key = {
   type: "major",
   tonic: "",
   alteration: 0,
@@ -29,7 +29,7 @@ export interface KeyScale {
   readonly chordScales: readonly string[];
 }
 
-const NoKeyScale: KeyScale = {
+export const NoKeyScale: KeyScale = {
   tonic: "",
   grades: Empty,
   intervals: Empty,
@@ -50,7 +50,7 @@ export interface MajorKey extends Key, KeyScale {
   readonly substituteDominantsMinorRelative: readonly string[];
 }
 
-const NoMajorKey: MajorKey = {
+export const NoMajorKey: MajorKey = {
   ...NoKey,
   ...NoKeyScale,
   type: "major",
@@ -70,7 +70,7 @@ export interface MinorKey extends Key {
   readonly melodic: KeyScale;
 }
 
-const NoMinorKey: MinorKey = {
+export const NoMinorKey: MinorKey = {
   ...NoKey,
   type: "minor",
   relativeMajor: "",
