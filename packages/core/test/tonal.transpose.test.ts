@@ -1,4 +1,4 @@
-import { transpose } from "../index";
+import { tonicIntervalsTransposer, transpose } from "../index";
 
 const transposeAllFrom = (from: string) => (str: string) =>
   str.split(" ").map((i) => transpose(from, i));
@@ -27,21 +27,49 @@ describe("Transpose", () => {
       expect(by3M("c2 d3 f4 g5")).toEqual(["E2", "F#3", "A4", "B5"]);
     });
 
+    test("transpose empty note", () => {
+      expect(transpose("", "M3")).toEqual("");
+    });
+
     test("invalid notes and intervals", () => {
       expect(() => transpose("M3", "blah")).toThrowError(
-        "Parse error: Illegal Interval Name (blah) received"
+        "Parse error: Illegal note name (M3) received"
       );
       expect(() => transpose("blah", "C2")).toThrowError(
-        "Parse error: Illegal Interval Name (C2) received"
+        "Parse error: Illegal note name (blah) received"
       );
       expect(() => transpose("", "")).toThrowError(
-        "Parse error: Illegal Interval Name () received"
+        "Parse error: Illegal interval name () received"
       );
     });
 
     test("transpose by descending intervals", () => {
       const byDesc2M = transposeAllBy("-2M");
       expect(byDesc2M("c2 d3 f4 g5")).toEqual(["Bb1", "C3", "Eb4", "F5"]);
+    });
+
+    test("tonic intervals transposer", () => {
+      const major = tonicIntervalsTransposer(
+        ["P1", "M2", "M3", "P4", "P5", "M6", "M7"],
+        "C"
+      );
+      const minor = tonicIntervalsTransposer(
+        ["P1", "m2", "m3", "P4", "P5", "m6", "m7"],
+        "C"
+      );
+      const empty = tonicIntervalsTransposer(
+        ["P1", "M2", "M3", "P4", "P5", "M6", "M7"],
+        ""
+      );
+      expect(major(-2)).toEqual("A");
+      expect(major(2)).toEqual("E");
+      expect(major(8)).toEqual("D");
+      expect(minor(-2)).toEqual("Ab");
+      expect(minor(2)).toEqual("Eb");
+      expect(minor(8)).toEqual("Db");
+      expect(empty(-2)).toEqual("");
+      expect(empty(2)).toEqual("");
+      expect(empty(8)).toEqual("");
     });
 
     test("transpose edge cases", () => {

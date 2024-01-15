@@ -26,6 +26,9 @@ export function detect(
   source: string[],
   options: Partial<DetectOptions> = {}
 ): string[] {
+  if (source.length === 0) {
+    return [];
+  }
   const notes = source.map((n) => note(n).pc).filter((x) => x);
   if (note.length === 0) {
     return [];

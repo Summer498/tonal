@@ -8,7 +8,7 @@ describe("@tonaljs/progression", () => {
       Progression.fromRomanNumerals("C", chords);
     expect(inC($("I IIm7 V7"))).toEqual($("C Dm7 G7"));
     expect(() => inC($("Imaj7 2 IIIm7"))).toThrowError(
-      "Parse error: Illegal Interval Name () received"
+      "Parse error: Illegal interval name () received"
     );
     expect(inC($("I II III IV V VI VII"))).toEqual($("C D E F G A B"));
     expect(inC($("bI bII bIII bIV bV bVI bVII"))).toEqual(

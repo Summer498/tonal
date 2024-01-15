@@ -71,11 +71,18 @@ export function tokenize(name: ScaleName): ScaleNameTokens {
     return ["", ""];
   }
   const i = name.indexOf(" ");
-  const tonic = note(name.substring(0, i));
-  if (tonic.empty) {
-    const n = note(name);
-    return n.empty ? ["", name] : [n.name, ""];
+  let _tonic;
+  try {
+    _tonic = note(name.substring(0, i));
+  } catch (e) {
+    try {
+      const n = note(name);
+      return [n.name, ""];
+    } catch (e) {
+      return ["", name];
+    }
   }
+  const tonic = _tonic;
 
   const type = name.substring(tonic.name.length + 1);
   return [tonic.name, type.length ? type : ""];
@@ -92,7 +99,7 @@ export const names = scaleTypeNames;
  */
 export function get(src: ScaleName | ScaleNameTokens): Scale {
   const tokens = Array.isArray(src) ? src : tokenize(src);
-  const tonic = note(tokens[0]).name;
+  const tonic = tokens[0] && note(tokens[0]).name;
   const st = getScaleType(tokens[1]);
   if (st.empty) {
     return NoScale;

@@ -43,19 +43,12 @@ describe("@tonaljs/abc-notation", () => {
   });
 
   test("toAbc", () => {
-    const SCIENTIFIC = [
-      "Abb2",
-      "Bb3",
-      "C4",
-      "D5",
-      "E#6",
-      "F##7",
-      "G#2",
-      "Gb7",
-      "",
-    ];
-    const ABC = ["__A,,", "_B,", "C", "d", "^e'", "^^f''", "^G,,", "_g''", ""];
+    const SCIENTIFIC = ["Abb2", "Bb3", "C4", "D5", "E#6", "F##7", "G#2", "Gb7"];
+    const ABC = ["__A,,", "_B,", "C", "d", "^e'", "^^f''", "^G,,", "_g''"];
     expect(SCIENTIFIC.map(AbcNotation.scientificToAbcNotation)).toEqual(ABC);
+    expect(() =>
+      SCIENTIFIC.concat([""]).map(AbcNotation.scientificToAbcNotation)
+    ).toThrowError("Parse error: Illegal note name () received");
   });
   test("toAbc Octave 0", () => {
     const SCIENTIFIC = ["A0", "Bb0", "C0", "D0", "E#0", "F##0", "G#0"];

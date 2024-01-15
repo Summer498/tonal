@@ -60,7 +60,9 @@ describe("@tonaljs/scale", () => {
     expect(Scale.get(["C4", "major"]).notes).toEqual($("C4 D4 E4 F4 G4 A4 B4"));
     expect(Scale.get(["eb", "bebop"]).notes).toEqual($("Eb F G Ab Bb C Db D"));
     expect(Scale.get(["C", "no-scale"]).notes).toEqual([]);
-    expect(Scale.get(["no-note", "major"]).notes).toEqual([]);
+    expect(() => Scale.get(["no-note", "major"]).notes).toThrowError(
+      "Parse error: Illegal note name (no-note) received"
+    );
   });
 
   describe("Scale.detect", () => {

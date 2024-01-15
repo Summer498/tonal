@@ -4,6 +4,7 @@ import {
   all as chordTypes,
   get as getChordType,
 } from "@tonaljs/chord-type";
+import { NoNote } from "@tonaljs/core";
 import { tonicIntervalsTransposer } from "@tonaljs/core";
 
 import {
@@ -109,14 +110,10 @@ export function getChord(
   optionalRoot?: string
 ): Chord {
   const type = getChordType(typeName);
-  const tonic = note(optionalTonic || "");
-  const root = note(optionalRoot || "");
+  const tonic = optionalTonic ? note(optionalTonic) : NoNote;
+  const root = optionalRoot ? note(optionalRoot) : NoNote;
 
-  if (
-    type.empty ||
-    (optionalTonic && tonic.empty) ||
-    (optionalRoot && root.empty)
-  ) {
+  if (type.empty) {
     return NoChord;
   }
 

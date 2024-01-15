@@ -123,7 +123,7 @@ export function interval(src: IntervalLiteral): Interval {
   } else if (isNamed(src)) {
     return interval(src.name);
   } else
-    throw new Error(`Parse error: Undefined Interval Name (${src}) received`);
+    throw new Error(`Parse error: Undefined interval name (${src}) received`);
 }
 
 const SIZES = [0, 2, 4, 5, 7, 9, 11];
@@ -131,14 +131,14 @@ const TYPES = "PMMPPMM";
 function parse(str?: string): Interval {
   const tokens = tokenizeInterval(str);
   if (tokens[0] === "") {
-    throw new Error(`Parse error: Illegal Interval Name (${str}) received`);
+    throw new Error(`Parse error: Illegal interval name (${str}) received`);
   }
   const num = +tokens[0];
   const q = tokens[1] as Quality;
   const step = (Math.abs(num) - 1) % 7;
   const t = TYPES[step];
   if (t === "M" && q === "P") {
-    throw new Error(`Parse error: Illegal Interval Name (${str}) received`);
+    throw new Error(`Parse error: Illegal interval name (${str}) received`);
   }
   const type = t === "M" ? "majorable" : "perfectable";
 

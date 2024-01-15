@@ -36,7 +36,9 @@ describe("note", () => {
     expect(Note.simplify("B#4")).toEqual("C5");
     const notes = $("C## C### F##4 Gbbb5 B#4 Cbb4");
     expect(notes.map(Note.simplify)).toEqual($("D D# G4 E5 C5 Bb3"));
-    expect(Note.simplify("x")).toEqual("");
+    expect(() => Note.simplify("x")).toThrowError(
+      "Parse error: Illegal note name (x) received"
+    );
   });
 
   test("from midi", () => {
@@ -47,16 +49,22 @@ describe("note", () => {
 
   test("names", () => {
     expect(Note.names()).toEqual(["C", "D", "E", "F", "G", "A", "B"]);
-    expect(Note.names(["fx", "bb", 12, "nothing", {}, null])).toEqual([
-      "F##",
-      "Bb",
-    ]);
+    expect(Note.names(["fx", "bb"])).toEqual(["F##", "Bb"]);
+    expect(() =>
+      Note.names(["fx", "bb", 12, "nothing", {}, null])
+    ).toThrowError("Parse error: Undefined Note name (12) received");
   });
   test("sortedNames", () => {
-    expect(Note.sortedNames($("c f g a b h j"))).toEqual($("C F G A B"));
-    expect(Note.sortedNames($("c f g a b h j j h b a g f c"))).toEqual(
+    expect(Note.sortedNames($("c f g a b"))).toEqual($("C F G A B"));
+    expect(() => Note.sortedNames($("c f g a b h j"))).toThrowError(
+      "Parse error: Illegal note name (h) received"
+    );
+    expect(Note.sortedNames($("c f g a b b a g f c"))).toEqual(
       $("C C F F G G A A B B")
     );
+    expect(() =>
+      Note.sortedNames($("c f g a b h j j h b a g f c"))
+    ).toThrowError("Parse error: Illegal note name (h) received");
     expect(Note.sortedNames($("c2 c5 c1 c0 c6 c"))).toEqual(
       $("C C0 C1 C2 C5 C6")
     );
@@ -66,9 +74,12 @@ describe("note", () => {
   });
 
   test("sortedUniq", () => {
-    expect(Note.sortedUniqNames($("a b c2 1p p2 c2 b c c3"))).toEqual(
+    expect(Note.sortedUniqNames($("a b c2 c2 b c c3"))).toEqual(
       $("C A B C2 C3")
     );
+    expect(() =>
+      Note.sortedUniqNames($("a b c2 1p p2 c2 b c c3"))
+    ).toThrowError("Parse error: Illegal note name (1p) received");
   });
 
   test("transpose", () => {
@@ -102,7 +113,9 @@ describe("note", () => {
     expect(notes.map((n) => Note.enharmonic(n))).toEqual(
       $("D Eb G4 E5 C5 A#3")
     );
-    expect(Note.enharmonic("x")).toEqual("");
+    expect(() => Note.enharmonic("x")).toThrowError(
+      "Parse error: Illegal note name (x) received"
+    );
     expect(Note.enharmonic("F2", "E#")).toBe("E#2");
     expect(Note.enharmonic("B2", "Cb")).toBe("Cb3");
     expect(Note.enharmonic("C2", "B#")).toBe("B#1");

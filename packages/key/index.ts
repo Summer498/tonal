@@ -150,7 +150,7 @@ const MelodicScale = keyScale(
  * @param tonic
  */
 export function majorKey(tonic: string): MajorKey {
-  const pc = note(tonic).pc;
+  const pc = tonic && note(tonic).pc;
   if (!pc) return NoMajorKey;
 
   const keyScale = MajorScale(pc);

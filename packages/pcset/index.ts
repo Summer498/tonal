@@ -344,11 +344,12 @@ function listToChroma(set: any[]): PcsetChroma {
   const binary = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < set.length; i++) {
-    pitch = note(set[i]);
-    // tslint:disable-next-line: curly
-    if (pitch.empty) pitch = interval(set[i]);
-    // tslint:disable-next-line: curly
-    if (!pitch.empty) binary[pitch.chroma] = 1;
+    try {
+      pitch = note(set[i]);
+    } catch (e) {
+      pitch = interval(set[i]);
+    }
+    binary[pitch.chroma] = 1;
   }
   return binary.join("");
 }

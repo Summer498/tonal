@@ -44,10 +44,10 @@ describe("interval", () => {
         "-1P -2M -3M -4P -5P -6M -7M"
       );
       expect(() => interval("not-an-interval")).toThrowError(
-        "Parse error: Illegal Interval Name (not-an-interval) received"
+        "Parse error: Illegal interval name (not-an-interval) received"
       );
       expect(() => interval("2P")).toThrowError(
-        "Parse error: Illegal Interval Name (2P) received"
+        "Parse error: Illegal interval name (2P) received"
       );
     });
     test("q", () => {
@@ -96,7 +96,7 @@ describe("interval", () => {
       );
       expect(() =>
         interval({ is_pitch: true, step: 1000, alt: 0 })
-      ).toThrowError("Parse error: Illegal Interval Name () received");
+      ).toThrowError("Parse error: Illegal interval name () received");
     });
 
     it("accepts octave", () => {
@@ -115,6 +115,13 @@ describe("interval", () => {
       expect(
         interval({ is_pitch: true, step: 0, alt: 0, oct: 0, dir: 1 }).name
       ).toBe("1P");
+    });
+    test("interval Object", () => {
+      expect(interval(interval("P1"))).toEqual(interval("P1"));
+      expect(interval({ name: "P1" })).toEqual(interval("P1"));
+      expect(() => interval({ name: "C4" })).toThrowError(
+        "Parse error: Illegal interval name (C4) received"
+      );
     });
   });
 });

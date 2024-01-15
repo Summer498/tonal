@@ -447,12 +447,8 @@ describe("@tonal/key", () => {
   });
 
   test("empty minor key ", () => {
-    expect(Key.minorKey("nothing")).toMatchObject({
-      type: "minor",
-      tonic: "",
-    });
-    expect(Object.keys(Key.minorKey("C")).sort()).toEqual(
-      Object.keys(Key.minorKey("nothing")).sort()
+    expect(() => Key.minorKey("nothing")).toThrowError(
+      "Parse error: Illegal note name (nothing) received"
     );
   });
 });

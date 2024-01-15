@@ -4,7 +4,13 @@ import {
   IntervalLiteral,
   IntervalName,
 } from "./interval";
-import { coordToNote, note as asNote, NoteLiteral, NoteName } from "./note";
+import {
+  coordToNote,
+  note as asNote,
+  NoteLiteral,
+  NoteName,
+  NoNote,
+} from "./note";
 import { PitchCoordinates } from "./pitch";
 
 /**
@@ -23,7 +29,7 @@ export function transpose(
   noteName: NoteLiteral,
   intervalName: IntervalLiteral | [number, number]
 ): NoteName {
-  const note = asNote(noteName);
+  const note = noteName ? asNote(noteName) : NoNote;
   const intervalCoord = Array.isArray(intervalName)
     ? intervalName
     : asInterval(intervalName).coord;
@@ -69,8 +75,8 @@ export function distance(
   fromNote: NoteLiteral,
   toNote: NoteLiteral
 ): IntervalName {
-  const from = asNote(fromNote);
-  const to = asNote(toNote);
+  const from = fromNote ? asNote(fromNote) : NoNote;
+  const to = toNote ? asNote(toNote) : NoNote;
   if (from.empty || to.empty) {
     return "";
   }

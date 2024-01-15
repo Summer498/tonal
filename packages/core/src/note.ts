@@ -74,6 +74,9 @@ export function note(src: NoteLiteral): Note {
       : isNamed(src)
       ? note(src.name)
       : NoNote;
+  if (value.empty) {
+    throw new Error(`Parse error: Undefined Note name (${src}) received`);
+  }
   cache.set(stringSrc, value);
   return value;
 }
@@ -103,6 +106,7 @@ const SEMI = [0, 2, 4, 5, 7, 9, 11];
 function parse(noteName: NoteName): Note {
   const tokens = tokenizeNote(noteName);
   if (tokens[0] === "" || tokens[3] !== "") {
+    throw new Error(`Parse error: Illegal note name (${noteName}) received`);
     return NoNote;
   }
 

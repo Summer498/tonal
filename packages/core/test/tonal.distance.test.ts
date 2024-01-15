@@ -35,8 +35,15 @@ describe("distance", () => {
       expect(distance("C2", "C")).toBe("1P");
     });
 
+    test("empty note distance", () => {
+      expect(distance("C", "")).toBe("");
+      expect(distance("", "C")).toBe("");
+    });
+
     test("notes must be valid", () => {
-      expect(distance("one", "two")).toBe("");
+      expect(() => distance("one", "two")).toThrowError(
+        "Parse error: Illegal note name (one) received"
+      );
     });
   });
 });

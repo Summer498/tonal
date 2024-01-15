@@ -11,10 +11,18 @@ describe("midi", () => {
     expect(Midi.toMidi("60")).toBe(60);
     expect(Midi.toMidi(0)).toBe(0);
     expect(Midi.toMidi("0")).toBe(0);
-    expect(Midi.toMidi(-1)).toBe(null);
-    expect(Midi.toMidi(128)).toBe(null);
-    expect(Midi.toMidi("blah")).toBe(null);
-    expect(Midi.toMidi(NaN)).toBe(null);
+    expect(() => Midi.toMidi(-1)).toThrowError(
+      "Parse error: Undefined Note name (-1) received"
+    );
+    expect(() => Midi.toMidi(128)).toThrowError(
+      "Parse error: Undefined Note name (128) received"
+    );
+    expect(() => Midi.toMidi("blah")).toThrowError(
+      "Parse error: Illegal note name (blah) received"
+    );
+    expect(() => Midi.toMidi(NaN)).toThrowError(
+      "Parse error: Undefined Note name (NaN) received"
+    );
   });
 
   test("freqToMidi", () => {

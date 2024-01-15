@@ -15,7 +15,7 @@ describe("@tonaljs/pcset", () => {
       });
       expect(Pcset.get(["d", "e", "c"])).toEqual(Pcset.get(["c", "d", "e"]));
       expect(() => Pcset.get(["not a note or interval"])).toThrowError(
-        "Parse error: Illegal Interval Name (not a note or interval) received"
+        "Parse error: Illegal interval name (not a note or interval) received"
       );
       expect(Pcset.get([]).empty).toBe(true);
     });
@@ -54,7 +54,7 @@ describe("@tonaljs/pcset", () => {
     );
     expect(Pcset.chroma("101010101010")).toBe("101010101010");
     expect(() => Pcset.chroma(["one", "two"])).toThrowError(
-      "Parse error: Illegal Interval Name (one) received"
+      "Parse error: Illegal interval name (one) received"
     );
     expect(Pcset.chroma("A B C")).toBe("000000000000");
   });
@@ -150,7 +150,7 @@ describe("@tonaljs/pcset", () => {
       "110101101010",
     ]);
     expect(() => Pcset.modes(["blah", "bleh"])).toThrowError(
-      "Parse error: Illegal Interval Name (blah) received"
+      "Parse error: Illegal interval name (blah) received"
     );
   });
 });
